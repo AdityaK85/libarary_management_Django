@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+{% include "header.html" %} 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  
+  
+</head>  
+
+
+<body style="background-color: #fdfcfc03;">
+ <div class="main-content">
+        <section class="section">
+         
+          <div class="section-body">
+            <div class="row">
+              <div class="col-lg-2" > 
+              </div>
+				<div class="col-lg-7">
+					<div class="card">
+						<div class="card-body">
+							 <ul class="breadcrumb breadcrumb-style "style="background: #f3f3f3;">
+								<li class="breadcrumb-item">
+								  <h5 class="page-title m-b-0">Add New Rent</h5>
+								</li>
+								<li class="breadcrumb-item">
+								  <a href="/dashboard/">
+									<i class="fas fa-home"></i></a>
+								</li>
+								</ul> 
+
+                             <form action="" method="get" id='new_user_form' style="margin: 25 px auto"  ; >
+                                
+            
+                               
+
+									<div class="form-group">
+                                    <label>Category</label>
+                                                                                      
+                                    <select id="category" class="form-control" >
+                                    <option value = "" selected hidden >Category</option>
+                                                                                            
+                                    {% for i in obj %}
+                                        <option value = "{{i.id}}" >{{i.category}}</option>
+                                    {% endfor %}
+                                    </select>
+                                                                                        
+                                    </div>
+								
+							   <label for="rent">Rent</label>
+								<input type="number" id="rent" class="form-control" name="rent" tabindex="1"  required autofocus  placeholder="rent" > <br>
+							            
+
+                <label for="hourly_price">Rent</label>
+								<input type="number" id="hourly_price" class="form-control" name="hourly_price" tabindex="1"  required autofocus  placeholder="hourly_price" > <br>
+
+                <center>
+                  <button type="button" type="submit" class="btn btn-success" value="save" onclick="add_rent()" >Save </button>
+                </center>
+                                                
+						          
+						
+                      </br>
+                  <!-- <div> -->
+                    <!-- <a href="#" class="txt1"> -->
+                      <!-- Add details -->
+                    <!-- </a> -->
+                      <!-- </div> -->
+                  
+                   </div>
+               </div>
+           </div>
+            
+        </div>
+        
+  
+          </div>
+    </div>		
+  </body>			 
+  <script>
+  
+  
+  $(document).ready(function(){
+  $(document).bind('keypress', function(e) {
+  if(e.keyCode==13){
+     $('#save_button').trigger('click');
+   }
+  });
+  })
+  
+
+  $("#category").select2( {
+    placeholder: "Select category",
+    allowClear: true
+    } );
+  
+
+  function add_rent(){
+  var category=$('#category').val()
+  var rent=$('#rent').val()
+  var hourly_price=$('#hourly_price').val()
+
+  if(category == ""){
+  
+    swal("Please Enter category.", {
+        icon: "info",
+        button: "Ok",
+        closeOnClickOutside: false,     
+        }).then(function() {
+          
+      });
+    
+    }
+	
+	
+ if(rent == ""){
+
+swal("Please Enter rent.", {
+	icon: "info",
+	button: "Ok",
+	closeOnClickOutside: false,     
+	}).then(function() {
+	  
+  });
+
+}
+
+  else{
+
+  console.log("printttttttttttttt")
+  console.log(category)
+
+        $.ajax({
+            method : "POST",
+            url : "/new_rent/",
+            data : {
+              
+              'category':category,
+              'rent':rent,
+              'hourly_price':hourly_price,
+          
+            },
+            success : function(response){
+               
+                if (response == "success"){
+            
+                    alert("Data store")
+ 
+                    location.href = '/book_rent/'
+ 
+                }
+                
+                else{
+                
+                    swal("Category already exixts")
+                
+                }
+ 
+            
+            }
+ 
+    });
+ }
+}
+ </script>
+{% include "footer.html" %}
+</html>

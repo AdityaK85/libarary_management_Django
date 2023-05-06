@@ -1,0 +1,178 @@
+<style>
+  .btn-group-vertical > .btn,
+  .btn-group > .btn {
+    position: relative;
+    -ms-flex: 1 1 auto;
+    -webkit-box-flex: 1;
+    flex: 1 1 auto;
+    width: 140px;
+    margin-bottom: -25px;
+  }
+</style>
+
+{% include "header.html" %} Main Content
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <ul
+                    class="breadcrumb breadcrumb-style"
+                    style="margin-bottom: 0px"
+                  >
+                    <li class="breadcrumb-item">
+                      <h4 class="page-title m-b-0">Add Books Rent</h4>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="/dashboard/">
+                        <button type="button" class="btn btn-primary btn-sm">
+                          Back
+                        </button></a
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-md-6 pull-right" style="margin-top: 7px">
+                  <a
+                    href="/addbook/"
+                    class="btn btn-icon btn-primary pull-right"
+                  >
+                    Add New Rent</a
+                  >
+                </div>
+              </div>
+
+              <!-- <div class="col-md-6 pull-right" style="margin-top: 7px">
+                 <a href="/add_task/" class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a> 
+              </div> -->
+
+              <hr />
+
+              <div id="table_div">
+                <div class="table-responsive">
+                  <table class="table table-hover" id="view_table">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Category</th>
+                        <th>Books Count</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for k in list %}
+
+                      <tr>
+                        <th scope="row">{{k.id}}</th>
+                        <td>{{k.category}}</td>
+                        <td>{{k.count}}</td>
+
+                        <td>
+                          <a
+                            class="btn btn-outline-primary"
+                            href="/view_books/{{k.id}}"
+                          >
+                            View
+                          </a>
+                          <!-- <a class="btn btn-outline-primary" href = "/edit_book/{{i.id}}"><i class=" fas fa fa-pencil" aria-hidden="true" ></i></a> 
+                         <a class="btn btn-outline-dark" onclick = "delete_book('{{i.id}}')" ><i class=" fas fa-trash" ></i></a>  -->
+                        </td>
+                      </tr>
+
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  $("#reports").attr("class", "active");
+  $(document).ready(function () {
+    $("#view_table").DataTable({});
+  });
+
+   function search_book(){ -->
+   var start_date = $("#start_date").val()
+   var end_date = $("#end_date").val()
+
+   console.log(start_date)
+   console.log(end_date)
+
+   $.ajax({
+   method : "POST",
+   url : "/search_book_report/",
+   data : {
+   'start_date':start_date,
+   'end_date':end_date,
+
+   },
+   success : function(response){
+   $("#loading").hide();
+   console.log(response)
+   if (response == "error"){
+   swal({
+   title:"Sorry, your search did not match any Items ",
+   icon: "warning",
+   button: "Ok",
+   closeOnClickOutside: false,
+   })
+
+   }
+   else{
+   $('#table_div').html("")
+   $('#table_div').html(response)
+
+   }
+
+   }
+   });
+
+   }
+
+   function delete_book(id){
+   console.log(id)
+   swal({
+   title: "Are you sure?",
+   text: "",
+   icon: "warning",
+   buttons: true,
+   dangerMode: true,
+   })
+   .then((willDelete) => {
+   if (willDelete) {
+   $.ajax({
+   method : "POST",
+   url : "/Delete_book/",
+   data : {
+   'id':id
+   },
+   success : function(response){
+   if (response == "success"){
+   swal("Book has been Deleted!", {
+   icon: "success",
+   button: "Ok",
+   closeOnClickOutside: false,
+   }).then(function() {
+   location.reload();
+   });
+   }
+   }
+   });
+   }
+   });
+   }
+</script>
+
+{% include "footer.html" %}

@@ -1,0 +1,269 @@
+
+ <style>
+  .btn-group-vertical>.btn, .btn-group>.btn {
+      position: relative;
+      -ms-flex: 1 1 auto;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+      width: 140px;
+      margin-bottom: -25px;
+  }
+  
+  
+  
+    </style>
+  
+  {% include "header.html" %} 
+        <!-- Main Content -->
+        <div class="main-content">
+          <section class="section">
+           
+            <div class="section-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <ul class="breadcrumb breadcrumb-style" style="margin-bottom: 0px;;">
+                            <li class="breadcrumb-item">
+                              <h4 class="page-title m-b-0">Book Available</h4>
+                            </li>
+                            <li class="breadcrumb-item">
+                              
+                              
+                              <a href="/dashboard/">
+                              <button type="button" class="btn btn-primary btn-sm">Back</button></a>
+                            
+                            
+                            
+                            </li>
+                          </ul>
+                        </div>
+
+                        <!-- <div class="col-md-6 pull-right" style="margin-top: 7px;"> -->
+                          <!-- <a href="/add_category/" class="btn btn-icon btn-primary pull-right" > Add New category</a> -->
+                            <!-- </div> -->
+                            <!-- </div> -->
+                           
+                        <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                          <!-- <a href="/add_task/" class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a> -->
+                        </div>
+                        </div>
+                        <hr>
+  
+                      <!-- <div class="row">		 -->
+                       <!-- <div class="col-12"> -->
+                       <!-- <div class="row"> -->
+  
+                          
+                          <!-- <div class="col-md-3"> -->
+                          <!-- <div class="form-group"> -->
+                          <!-- <label>Start Date <span style = "color:red">*</span>:</label> -->
+                          <!-- <div class="input-group"> -->
+                          <!-- <input type="date" class="form-control" value = "{{start_day|date:'Y-m-d'}}" id = "start_date"> -->
+                          <!-- </div> -->
+                          <!-- </div> -->
+                          <!-- </div> -->
+                          
+                          
+                          <!-- <div class="col-md-3"> -->
+                          <!-- <div class="form-group"> -->
+                          <!-- <label>End Date <span style = "color:red">*</span>:</label> -->
+                          <!-- <div class="input-group"> -->
+                          <!-- <input type="date" class="form-control" value = "{{end_date|date:'Y-m-d'}}" id = "end_date"> -->
+                          <!-- </div> -->
+                          <!-- </div> -->
+                          <!-- </div> -->
+                              
+                          
+                          
+                      
+  
+                          
+                          
+                          
+                          
+                          <!-- <div class="col-md-1"> -->
+                          <!-- <div class="form-group"> -->
+                                  <!-- <div class="buttons"> -->
+                                  <!-- <a class="btn btn-primary btn-sm" style = "margin-top: 45%;" onclick = "search_book()">Search</a> -->
+                                <!-- </div> -->
+                          <!-- </div> -->
+                          <!-- </div> -->
+                          
+                      
+                      <!-- </div> -->
+                      <!-- </div> -->
+                      <!-- </div> -->
+                    
+                     
+
+                        <div class="table-responsive">
+
+                        
+					
+                            <table class="table table-hover" style="padding:12px;" id  = "view_table" >
+                              <thead>
+                                <tr >
+                                 
+                              <th > Id</th>
+                              <th> Book Name</th>
+                             
+         
+                     
+                                </tr>
+                              </thead>
+                              <tbody>
+                             
+                                 {% for i in obj1 %}
+                     
+                     <tr>
+                                  <td>{{i.id}}</td>
+                                  <td>{{i.book_name}}</td>
+                             
+                               
+                                
+                                
+                    <!-- <td> -->
+                     
+                                     <!-- <a class="btn btn-outline-dark" onclick = "delete_category('{{i.id}}')" ><i class=" fas fa-trash" ></i></a> -->
+                                  <!-- </td> -->
+                                </tr>
+                    
+                                 {% endfor %}
+                    
+                              </tbody>
+                            </table>
+                 
+                          
+                          
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </section>
+          </div>
+       
+        </div>
+      </div>
+                   
+                         </div>
+                  
+                      
+                  
+  
+                   </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+          </section>
+        </div>
+     
+      </div>
+    </div>
+  
+  
+  
+  
+    
+  </body>
+  </html>
+  <script>
+  
+  <!-- $('#book_report').attr("class","active") -->
+  <!-- $("#reports").attr("class","active") -->
+  $(document).ready( function () {
+      
+      $('#view_table').DataTable({
+  
+          });
+  });
+  
+  
+  
+  function search_book(){
+   var start_date = $("#start_date").val()
+   var end_date = $("#end_date").val() 
+  
+  
+   console.log(start_date)
+   console.log(end_date)
+  
+      $.ajax({
+          method : "POST",
+          url : "/search_book_report/",
+          data : {
+                  'start_date':start_date,
+                  'end_date':end_date,
+                  
+              
+          },
+          success : function(response){
+              $("#loading").hide();
+              console.log(response)
+              if (response == "error"){
+                  swal({
+                      title:"Sorry, your search did not match any Items ",
+                      icon: "warning",
+                      button: "Ok",
+                      closeOnClickOutside: false,
+                      })
+  
+                  }
+              else{
+                  $('#table_div').html("")
+                  $('#table_div').html(response)
+                  
+              }
+                  
+          
+          }
+      });
+  
+  }
+  
+  
+  function delete_category(id){
+    console.log(id)
+    swal({
+      title: "Are you sure?",
+      text: "",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          method : "POST",
+          url : "/Delete_category/",
+          data : {
+            'id':id
+            },
+          success : function(response){
+            if (response == "success"){
+              swal("Book has been Deleted!", {
+              icon: "success",
+              button: "Ok",
+              closeOnClickOutside: false,
+              }).then(function() {
+                location.reload();
+              });
+            }
+          }
+        });
+      }
+    });
+  }
+  
+ 
+  
+  
+  </script>
+  
+  {% include "footer.html" %}

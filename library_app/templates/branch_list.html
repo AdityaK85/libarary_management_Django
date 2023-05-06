@@ -1,0 +1,327 @@
+
+ <style>
+    .btn-group-vertical>.btn, .btn-group>.btn {
+        position: relative;
+        -ms-flex: 1 1 auto;
+        -webkit-box-flex: 1;
+        flex: 1 1 auto;
+        width: 140px;
+        margin-bottom: -25px;
+    }
+      </style>
+    
+    {% include "header.html" %} 
+          <!-- Main Content -->
+          <div class="main-content">
+            <section class="section">
+             
+              <div class="section-body">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <ul class="breadcrumb breadcrumb-style" style="margin-bottom: 0px;;">
+                              <li class="breadcrumb-item">
+                                <h4 class="page-title m-b-0">Store Details</h4>
+                              </li>
+                              <li class="breadcrumb-item">
+                                
+                                
+                                <a href="/dashboard/">
+                                <button type="button" class="btn btn-primary btn-sm">Back</button></a>
+                              
+                              
+                              
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                            <a href="#" class="btn btn-icon btn-primary pull-right" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i></a>
+                          </div>
+                          </div>
+                          <hr>
+                          <br>
+                        <div class="table-responsive">
+                          <table class="table table-striped" id  = "view_table" >
+                            <thead>
+                              <tr>
+                                <th class="text-center"> # </th>
+             
+                                <th>Store Name</th>
+                                <th>Action</th>
+       
+                   
+                              </tr>
+                            </thead>
+                            <tbody>
+                           
+                               {% for i in list %}
+                               
+                               <tr>
+                                <td class="text-center">{{forloop.counter}}</td>
+                                <td>{{i.branch_name}}</td>
+                             
+                              
+                              
+                                <td>
+                                   
+                                   <a class="btn btn-outline-primary" onclick = "open_edit_modal('{{i.id}}','{{i.branch_name}}')"><i class="fas fa-pen"></i></a>
+                                   
+                                   <a class="btn btn-outline-dark" onclick = "delete_branch('{{i.id}}')" ><i class=" fas fa-trash" ></i></a>
+                                </td>
+                              </tr>
+                              
+                              {% endfor %}
+                              
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </section>
+          </div>
+       
+        </div>
+      </div>
+    
+    
+    <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="formModal">Add Store</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+               
+                      <div class="form-group">
+                        <label>Store Name<span style = "color:red">*</span>:</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-home"></i>
+                            </div>
+                          </div>
+                          <input type="text" class="form-control" placeholder="Store Name" id = "branch_name">
+                        </div>
+                      </div>
+                      
+                     
+                   
+                 
+                      <center><button type="button" onclick = "login()" class="btn btn-primary m-t-15 waves-effect">Save</button><center>
+                 
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+    
+    <!--------------------------------------------------------------------------------------->
+            
+            <div class="modal fade" id="exampleModal_2" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="formModal">Update Store</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                        
+                        <input type="hidden" id = "id_store">
+                        
+                      <div class="form-group">
+                        <label>Store Name<span style = "color:red">*</span>:</label>
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <div class="input-group-text">
+                              <i class="fas fa-home"></i>
+                            </div>
+                          </div>
+                          <input type="text" class="form-control" placeholder="Store Name" id = "store_name">
+                        </div>
+                      </div>
+                      
+                      <center><button type="button" onclick = "edit_store()" class="btn btn-primary m-t-15 waves-effect">Update</button><center>
+                 
+                  </div>
+                </div>
+              </div>
+            </div>
+    
+    
+    
+    
+      
+    </body>
+    </html>
+    <script>
+    
+    
+    $(document).ready( function () {
+        $('#branch_details').addClass("active");
+        $('#view_table').DataTable();
+    });
+    
+    
+    function login(){
+    var branch_name=$('#branch_name').val()
+    
+    if (branch_name==""){
+    swal({
+        title:"Please add store name." ,
+        icon:"info",
+        button:"Ok",
+        closeOnConfirm: false,
+        closeOnClickOutside: false,
+    }).then(function(){
+        
+    })
+    }
+    else{
+        $.ajax({
+                method : "POST",
+                url : "/add_branch_details/",
+                data : {
+                    'branch_name':branch_name,
+                },
+                success : function(response){
+                    console.log(response)
+                    $("#exampleModal").modal('hide');
+                    $('#branch_name').val("")
+                    if (response == "success"){
+                        swal({
+                            title:"Store Added Successfully!" ,
+                            icon:"success",
+                            button:"Ok",
+                            closeOnConfirm: false,
+                            closeOnClickOutside: false,
+                        }).then(function(){
+                            location.reload()
+                        })
+                    }
+                    else{
+                        swal({
+                            title:"Store Name Already Exists!" ,
+                            icon:"info",
+                            button:"Ok",
+                            closeOnConfirm: false,
+                            closeOnClickOutside: false,
+                        }).then(function(){
+                        
+                        })
+    
+                    }
+    
+                }
+            });
+        
+        
+        
+        }
+     
+    }
+    
+    
+    
+    function delete_branch(id){
+        console.log(id)
+        swal({
+            title: "Are you sure?",
+            text: "Deleting this store will delete all users and task created for this store!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    method : "POST",
+                    url : "/Delete_branch/",
+                    data : {
+                        'id':id
+                        },
+                    success : function(response){
+                        if (response == "success"){
+                            swal("Store has been Deleted!", {
+                            icon: "success",
+                            button: "Ok",
+                            closeOnClickOutside: false,
+                            }).then(function() {
+                                location.reload();
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
+    
+    function open_edit_modal(id,store_name){
+    
+    $("#id_store").val(id)
+    $("#store_name").val(store_name)
+    $("#exampleModal_2").modal('show');
+    }
+    
+    
+    function edit_store(){
+    
+    id = $('#id_store').val()
+    store_name = $('#store_name').val()
+    
+    if (store_name==""){
+    swal({
+        title:"Please add store name." ,
+        icon:"info",
+        button:"Ok",
+        closeOnConfirm: false,
+        closeOnClickOutside: false,
+    }).then(function(){
+        
+    })
+    }
+    else{
+    
+    
+    $.ajax({
+                method : "POST",
+                url : "/branch_update/",
+                data : {
+                    'id':id,
+                    'store_name':store_name,
+                },
+                success : function(response){
+                    console.log(response)
+                    $("#exampleModal_2").modal('hide');
+                    $('#store_name').val("")
+                
+                    swal({
+                        title:"Store Updated Successfully!" ,
+                        icon:"success",
+                        button:"Ok",
+                        closeOnConfirm: false,
+                        closeOnClickOutside: false,
+                    }).then(function(){
+                        location.reload()
+                    })
+            
+                }
+            });
+    }
+    }
+    
+    </script>
+    
+    {% include "footer.html" %}

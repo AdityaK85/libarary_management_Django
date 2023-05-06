@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+{% include "header.html" %} 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  
+  <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+</head>  
+
+
+<body style="background-color: #fdfcfc03;" >
+
+
+ <div class="main-content">
+        <section class="section">
+       
+          <div class="section-body" >
+            <div class="row" >
+              <div class="col-lg-2" > 
+              </div>
+				<div class="col-lg-7">
+					<div class="card" >
+						<div class="card-body">
+							 <ul class="breadcrumb breadcrumb-style "style="background: #f3f3f3;">
+								<li class="breadcrumb-item">
+								  <h5 class="page-title m-b-0">request Book Update</h5>
+								</li>
+								<li class="breadcrumb-item">
+								  <a href="/dashboard/">
+									<i class="fas fa-home"></i></a>
+								</li>
+								</ul> 
+                                <form action="" method="get" id='new_user_form' style="margin: 25 px auto"  ; >
+                                
+            
+                               
+                                  <div class="form-group">
+                                    <label>Book Name</label>
+                                                                                      
+                                    <select id="book_name" class="form-control" >
+                                    <option value = "" selected hidden >Book Name</option>
+                                                                                            
+                                    {% for i in obj1 %}
+                                        <option value = "{{i.book_name}}" >{{i.book_name}}</option>
+                                    {% endfor %}
+                                    </select>
+                                    </div>
+                                    
+                                    <label for="stu_name">Student Name</label>
+                                    <input type="text" value= {{obj.stu_name}} id="stu_name" class="form-control" name="stu_name" tabindex="1" placeholder="stu_name"><br>
+    
+                                    <label for="stu_class">Student Class</label>
+                                    <input type="number" value={{obj.stu_class}} id="stu_class" class="form-control" name="stu_class" tabindex="1" placeholder="stu_class"><br>
+    
+    
+                                    <label for="section">Section:</label>
+                                    <input type="text" id="section" value= {{obj.section}} class="form-control" name="section" tabindex="1"  required autofocus  placeholder="section" > <br>
+    
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" value= {{obj.email}} class="form-control" name="email" tabindex="1"  required autofocus  placeholder="email" > <br>
+                                    <br>
+                                    <label for="issue">Issue date:</label>
+    
+                                    <input type="date" value="{{obj.issue_date | date:'Y-m-d'}}" id="issue_date" name="trip-start">
+    
+                                    <label for="till">Till date:</label>
+                                    <input type="date" id="till_date" value="{{obj.till_date | date:'Y-m-d'}}" name="trip-end">
+                                    <br> <br>
+                                    
+                                    <label for="condition">Condition:</label>
+                                                   <select name="condition" id="condition">
+                                        <option value="old">Old</option>
+                                        <option value="new">New</option>
+                                        <option value="average">Average</option>
+                                        
+                                      </select> <br> <br>
+
+                                      <div class="form-group">
+                                        <label>Images select:</label>
+                                                                    
+                                      <input type="file" id="img"  class="form-control" name="img" accept="image/*">
+                                      <span> {{obj.img.url}} </span>
+                                                  </div>
+                                                  
+    
+                                      <div class="form-group">
+                                        <label>Request Generator</label>
+                                                                                          
+                                        <select id="request_generator" class="form-control" >
+                                        <option value = "" selected hidden >Request Generator</option>
+                                                                                                
+                                        {% for i in obj2 %}
+                                            <option value = "{{i.name}}" >{{i.name}}</option>
+                                        {% endfor %}
+                                        </select>
+                                                                                            
+                                        <div class="form-group">
+                                          <label for="request_status">Request Status</label>
+                                                              <select  type="text" id="request_status"  class="form-control" name="request_status" placeholder="request_status" >
+                                                 
+                                               <option value="Accept">Accept</option>
+                                               <option value="Pending">Pending</option>
+                                               <option value="Reject">Reject</option>
+                                            </select>
+                                             
+                                                 </div>
+                                     
+                                        <input type = "hidden" id = "user_id" value = "{{user_id}}">
+                                    <center>
+                                      <button type="button" type="submit" class="btn btn-success" value="save" onclick="request_edit()" >Save </button>
+                            
+                                    </center>
+                                       
+                          </br>
+                  <!-- <div> -->
+                    <!-- <a href="#" class="txt1"> -->
+                      <!-- Add details -->
+                    <!-- </a> -->
+                      <!-- </div> -->
+                  
+                   </div>
+               </div>
+           </div>
+            
+        </div>
+        
+  
+          </div>
+    </div>		
+  </body>			 
+  <script>
+  
+           
+  
+    $(document).ready(function(){
+      $("#book_name").val("{{obj.book_name}}");
+      $("#condition").val("{{obj.condition}}");
+      $("#request_generator").val("{{obj.request_generator}}");
+      $("#request_status").val("{{obj.request_status}}");
+     
+           $('#save_button').trigger('click');
+        
+        })
+        
+        
+        function request_edit(){
+          var book_name=$('#book_name').val()
+          var stu_name=$('#stu_name').val()
+          var stu_class=$('#stu_class').val()
+          var section=$('#section').val()
+          var email=$('#email').val()
+          var issue_date=$('#issue_date').val()
+          var till_date=$('#till_date').val()
+          var condition=$('#condition').val()
+          var status=$('#status').val()
+          var request_generator=$('#request_generator').val()
+          var image = $('#img').val()
+          var user_id =$('#user_id').val()
+
+ 
+      
+        
+        console.log(book_name)
+        console.log(stu_name)
+        console.log(stu_class)
+        console.log(section)
+        console.log(email)
+        console.log(issue_date)
+        console.log(till_date)
+        console.log(condition)
+        console.log(status)
+        console.log(request_generator)
+        console.log(user_id)
+        
+        var form = $("#form_data")[0];
+        var data_item = new FormData(form);
+        data_item.append("img",document.getElementById("img").files[0])
+        data_item.append("book_name",book_name)
+        data_item.append("stu_name",stu_name)
+        data_item.append("stu_class",stu_class)
+        data_item.append("section",section)
+        data_item.append("email",email)
+        data_item.append("issue_date",issue_date)
+        data_item.append("till_date",till_date)
+        data_item.append("condition",condition)
+        data_item.append("status",status)
+        data_item.append("request_generator",request_generator)
+        data_item.append("user_id",user_id)
+              
+              $.ajax({
+                  method : "POST",
+                  url : "/editrequest",
+                  enctype : "multipart/form_data",
+                  processData : false,
+                  contentType : false,
+                  cache : false,
+                  data :data_item,
+                  success : function(response){
+                     
+                      if (response == "success"){
+                  
+                          alert("Data updated successfully")
+       
+                          location.href = '/book_issue_report/'
+       
+                      }
+                      
+                      else{
+                      
+                          alert("User already requested")
+                      
+                      }
+       
+                  
+                  }
+       
+          });
+       }
+      
+ </script>
+{% include "footer.html" %}
+</html>

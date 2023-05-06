@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no"
+      name="viewport"
+    />
+    <title>Library Management</title>
+    <!-- General CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/app.min.css' %}" />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/bundles/bootstrap-social/bootstrap-social.css' %}"
+    />
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/components.css' %}" />
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="{% static 'assets/img/favicon.ico' %}"
+    />
+  </head>
+
+  <body style="background-color: #fdfcfc03">
+    <div class="loader"></div>
+    <div id="app">
+      <section class="section">
+        <div class="container mt-5">
+          <div class="row">
+            <div
+              class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4"
+            >
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h4>Login</h4>
+                </div>
+                <div class="card-body">
+                  <form
+                    method="POST"
+                    action="admindetail.html"
+                    class="needs-validation"
+                    novalidate=""
+                  >
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        name="email"
+                        tabindex="1"
+                        required
+                        autofocus
+                        placeholder="email"
+                      />
+
+                      <center>
+                        <span
+                          style="display: none; color: red; font-size: 14px"
+                          id="email_error"
+                          >Please Enter Email</span
+                        >
+                      </center>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="d-block">
+                        <label for="password" class="control-label"
+                          >Password</label
+                        >
+                        <!-- <div class="float-right"> -->
+                        <!-- <a href="auth-forgot-password.html" class="text-small"> -->
+                        <!-- Forgot Password? -->
+                        <!-- </a> -->
+                        <!-- </div> --> <!-- </div> --> <!-- </div> --> <!-- </div> -->
+                      </div>
+
+                      <input
+                        id="password"
+                        type="password"
+                        class="form-control"
+                        name="password"
+                        tabindex="2"
+                        required
+                        placeholder="Password"
+                      />
+
+                      <center>
+                        <span
+                          style="display: none; color: red; font-size: 14px"
+                          id="pwd_error"
+                          >Please Enter Password</span
+                        >
+                      </center>
+                      <center>
+                        <span
+                          style="display: none; color: red; font-size: 14px"
+                          id="error"
+                          >Invalid Credentials!</span
+                        >
+                      </center>
+                    </div>
+                    <!-- <div class="form-group"> -->
+                    <!-- <div class="custom-control custom-checkbox"> -->
+                    <!-- <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me"> -->
+                    <!-- <label class="custom-control-label" for="remember-me">Remember Me</label> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+                    <div class="form-group">
+                      <button
+                        type="button"
+                        onclick="login()"
+                        id="save_button"
+                        class="btn btn-primary btn-lg btn-block"
+                        tabindex="4"
+                      >
+                        Login
+                      </button>
+                    </div>
+                    <!-- <center> <a href="signup/"><b> Sign-Up </b></a> </center>  -->
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="{% static 'assets/js/app.min.js'%}"></script>
+    <!-- JS Libraies -->
+    <script src="{% static 'assets/js/scripts.js'%}"></script>
+    <!-- Custom JS File -->
+    <script src="{% static 'assets/js/custom.js'%}"></script>
+  </body>
+</html>
+
+<script>
+  $(document).ready(function () {
+    $(document).bind("keypress", function (e) {
+      if (e.keyCode == 13) {
+        $("#save_button").trigger("click");
+      }
+    });
+  });
+
+  function login() {
+    var email = $("#email").val();
+    var password = $("#password").val();
+
+    console.log(email);
+    console.log(password);
+
+    if (email == "") {
+      $("#email_error").show();
+      $("#email").focus();
+    } else if (password == "") {
+      $("#pwd_error").show();
+      $("#password").focus();
+    } else {
+      $.ajax({
+        method: "POST",
+        url: "/login_check/",
+        data: {
+          email: email,
+          password: password,
+        },
+        success: function (response) {
+          console.log(response);
+          if (response == "success") {
+            location.href = "/dashboard/";
+          } else {
+            $("#error").show();
+          }
+        },
+      });
+    }
+  }
+
+  $("#email").keyup(function () {
+    $("#email_error").hide();
+    $("#invalid_error").hide();
+    $("#error").hide();
+  });
+
+  $("#password").keyup(function () {
+    $("#pwd_error").hide();
+    $("#invalid_error").hide();
+  });
+
+  $("#password").keyup(function () {
+    $("#pwd_error").hide();
+    $("#user_inactive_error").hide();
+    $("#error").hide();
+  });
+</script>

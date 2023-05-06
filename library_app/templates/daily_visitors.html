@@ -1,0 +1,298 @@
+
+ <style>
+    .btn-group-vertical>.btn, .btn-group>.btn {
+        position: relative;
+        -ms-flex: 1 1 auto;
+        -webkit-box-flex: 1;
+        flex: 1 1 auto;
+        width: 140px;
+        margin-bottom: -25px;
+    }
+    
+    
+    
+      </style>
+    
+    {% include "header.html" %} 
+          <!-- Main Content -->
+          <div class="main-content">
+            <section class="section">
+             
+              <div class="section-body">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <ul class="breadcrumb breadcrumb-style" style="margin-bottom: 0px;;">
+                              <li class="breadcrumb-item">
+                                <h4 class="page-title m-b-0">Daily Visitors</h4>
+                              </li>
+                              <li class="breadcrumb-item">
+                                
+                                
+                                <a href="/dashboard/">
+                                <button type="button" class="btn btn-primary btn-sm">Back</button></a>
+                              
+                              
+                              
+                              </li>
+                            </ul>
+                          </div>
+  
+                          <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                            <a href="/add_new_entry/" class="btn btn-icon btn-primary pull-right" > Add New Entry</a>
+                              </div>
+                              </div>
+                             
+                          <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                            <!-- <a href="/add_task/" class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a> -->
+                          </div>
+                          </div>
+                          <hr>
+    
+                       
+  
+                            <div id="table_div"> 
+                          <div class="table-responsive">
+  
+                          
+                      
+                              <table class="table table-hover" id  = "view_table" >
+                                <thead>
+                                  <tr>
+                                    <th > Id </th>
+                                 <th> Visitors Name</th>
+                                 <th> Visitors Plan</th>
+                                 <th>Email</th>
+                                 <th>Contact No.</th>
+                                 <th>Gender</th>
+                                 <th> Book Name</th>
+                                <th>Visit Time</th>
+                                <th>EXit Time</th>
+                                <th>Hourly Price</th>
+                                <th>Action</th>
+                                <th>Add Payment</th>
+           
+                       
+                                  </tr>
+                                </thead>
+                                <tbody>
+                               
+                                   {% for i in obj %}
+                       
+                       <tr>
+                                    <th>{{i.id}}</th>
+                                    <td>{{i.visitor_name}}</td>
+                                    <td>{{i.visitor_plan}}</td>
+                                    <td>{{i.email}}</td>
+                                    <td>{{i.contact_No}}</td>
+                                    <td>{{i.gender}}</td>
+                                    <td>{{i.book_name}}</td>
+                                    <td>{{i.visit_time}}</td>
+                                    <td>{{i.end_time}}</td>
+                                    <td>{{i.total_price}}</td>
+                                  
+                                  
+                                 
+                                  
+                                  
+                                    <td>
+                                      
+                                    {% if i.accept_status == 'Accept'%}
+                                       {%if i.payment_status_time == False %}
+                                       <a class="btn btn-outline-primary" onclick = "change_request_time('{{i.id}}','Reject')" >Reject</a>
+                                       {%endif%} 
+                                        <td>
+                                  
+
+                                        {%if i.payment_status_time == False %}
+                                        <a class="btn btn-outline-primary" onclick = "open_modal_time('{{i.total_price}}','{{i.id}}')"> Payment</a>
+                                        {%else%}
+                                         completed
+                                        {%endif%} 
+
+
+                                       </td>
+
+                                    {%else%}
+                                      <a class="btn btn-outline-primary" onclick = "change_request_time('{{i.id}}','Accept')" >Accept</a>
+                                       {%endif%}  
+                                  
+                                  </td>
+                                
+                                  </tr>
+                                      {% endfor %}
+                                      
+                                </tbody>
+                              </table>
+                   
+                            
+                            
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+              </section>
+            </div>
+         
+          </div>
+        </div>
+                     
+                           </div>
+                    
+                        
+                    
+    
+                     </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </section>
+          </div>
+       
+        </div>
+      </div>
+    
+    
+     <!----------------------------------------------------------------------------------------------------->
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Add Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              
+	
+			  
+			  <div class="modal-body">
+           
+                  <div class="form-group">
+                    <label>Payable Charges<span style = "color:red">*</span>:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="" id = "total_price"  disabled = True>
+
+                      <input type = "hidden" id = "book_id">
+                    </div>
+                  </div>
+                  <center>
+                   <a class="btn btn-outline-primary" onclick = "payment_status_time()" > Update </a>
+                  </center>
+				           
+                                
+                      
+                     
+                              
+             
+              </div>
+            </div>
+          </div>
+        </div>
+    
+      
+    </body>
+    </html>
+    <script>
+    
+    <!-- $('#book_report').attr("class","active") -->
+    <!-- $("#reports").attr("class","active") -->
+    $(document).ready( function () {
+        
+        $('#view_table').DataTable({
+    
+            });
+    });
+    
+    function open_modal_time(total_price, id){
+      console.log(total_price)
+      $('#exampleModal').modal('show'); 
+      $('#total_price').val(total_price);
+      $('#book_id').val(id);
+   
+    }
+    
+    function change_request_time(id,status){
+      console.log(id)
+      console.log(status)
+      swal({
+        title: "Are you sure?",
+        text: "",
+        icon: "info",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.ajax({
+            method : "POST",
+            url : "/change_request_time/",
+            data : {
+              'id':id,
+              'status':status,
+              },
+            success : function(response){
+              if (response == "success"){
+                swal("Book Status Changed", {
+                icon: "success",
+                button: "Ok",
+                closeOnClickOutside: false,
+                }).then(function() {
+                  location.reload();
+                });
+              }
+            }
+          });
+        }
+      });
+    }
+    
+    
+    function payment_status_time(){
+      var book_id = $("#book_id").val() 
+      var total_price = $("#total_price").val() 
+
+      console.log(book_id)
+      console.log(total_price)
+
+          $.ajax({
+            method : "POST",
+            url : "/payment_status_required/",
+            data : {
+              'id':book_id,
+              'total_price':total_price,
+              },
+            success : function(response){
+              if (response == "success"){
+                swal("Return Status Changed", {
+                icon: "success",
+                button: "Ok",
+                closeOnClickOutside: false,
+                }).then(function() {
+                  location.reload();
+                });
+              }
+            }
+          })
+    }
+    
+    
+    
+    
+    </script>
+    
+    {% include "footer.html" %}

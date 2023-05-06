@@ -1,0 +1,429 @@
+
+ <style>
+    .btn-group-vertical>.btn, .btn-group>.btn {
+        position: relative;
+        -ms-flex: 1 1 auto;
+        -webkit-box-flex: 1;
+        flex: 1 1 auto;
+        width: 140px;
+      margin-bottom: -25px;
+    }
+
+
+    
+      </style>
+    
+    {% include "header.html" %} 
+          <!-- Main Content -->
+          <div class="main-content">
+            <section class="section">
+             
+              <div class="section-body">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <ul class="breadcrumb breadcrumb-style" style="margin-bottom: 0px;;">
+                              <li class="breadcrumb-item">
+                                <h4 class="page-title m-b-0">Employee Salary Details</h4>
+                              </li>
+                              <li class="breadcrumb-item">
+                                
+                  
+                  <a href="/dashboard/">
+                                <button type="button" class="btn btn-primary btn-sm">Back</button></a>
+                              
+                  
+                  
+                  </li>
+                            </ul>
+                          </div>
+                          <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                       
+                        <a href="/add_salaries/" class="btn btn-icon btn-primary pull-right" > Add New Details</a>
+                          </div>
+                          </div>
+                          <hr>
+                          <br>
+  
+  
+  
+  
+  
+  
+  
+                           <div id="table_div"> 
+  
+  
+                        <div class="table-responsive">
+                          <table class="table table-hover" id  = "view_table" >
+                            <thead>
+                              <tr>
+                                <th class="text-center"> Id </th>
+             
+                            <th>Name</th>
+                            <th>Destination</th>
+                            <th>Designation</th>
+                            <th>Yearly Package</th>
+                            <th>Monthly Salary</th>
+                            
+                            <th>Action</th>
+       
+                   
+                              </tr>
+                            </thead>
+                            <tbody>
+                           
+                               {% for i in obj1 %}
+                   
+                   <tr>
+                                <th scope="row">{{i.id}}</th>
+                                <td>{{i.name}}</td>
+                                <td>{{i.destination}}</td>
+                                <td>{{i.designation}}</td>
+                                <td>{{i.yearly_package}}</td>
+                                <td>{{i.monthly_salary}}</td>
+                             
+                              
+                              
+                  <td>
+                    
+
+            
+                      <a class="btn btn-outline-primary" onclick = "edit_modal_salaries('{{i.name}}','{{i.destination}}', '{{i.designation}}', 
+                      '{{i.yearly_package}}', '{{i.monthly_salary}}','{{i.id}}')"> <i class=" fas fa fa-pencil" aria-hidden="true" ></i></a>
+
+
+                      <a class="btn btn-outline-primary" onclick = "delete_modal_salaries('{{i.id}}')"> <i class=" fas fa-trash" ></i</a>
+                          
+                                  
+                                </td>
+                              </tr>
+                  
+                  {% endfor %}
+                  
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </section>
+          </div>
+       
+        </div>
+      </div>
+    
+    
+    
+   <!--modal-->
+            
+   <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="formModal">Edit Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+
+  
+  <div class="modal-body">
+     
+            <div class="form-group">
+              <label>Employee Name<span style = "color:red">*</span>:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+                      <input type="text" id="name_modal" class="form-control" value="{{obj1.name}}" name="name" >
+                             <input type = "hidden" id = "book_id">
+               
+              </div>
+            </div>
+
+             <div class="form-group">
+              <label> Destination <span style = "color:red">*</span>:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+                <input type="text" class="form-control" placeholder="" value="{{obj1.destination}}" id = "destination_modal" >
+
+               <input type = "hidden" id = "book_id">
+              </div>
+            </div>
+
+             <div class="form-group">
+              <label> Designation <span style = "color:red">*</span>:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+               <input type="text" id="designation_modal" class="form-control" value="{{obj1.destination}}" name="destination"  > 
+
+               <input type = "hidden" id = "book_id">
+              </div>
+            </div>
+
+
+             <div class="form-group">
+              <label> Yearly Package <span style = "color:red">*</span>:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+                <input type="text" class="form-control" onchange= "change_salary()" placeholder="" pattern="\d*" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" value="{{obj1.yearly_package}}" id = "yearly_package_modal" >
+                     <input type = "hidden" id = "book_id">
+              
+              </div>
+            </div>
+
+             <div class="form-group">
+              <label> Monthly Salary <span style = "color:red">*</span>:</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">
+                    <i class="fas fa-user"></i>
+                  </div>
+                </div>
+               <input type="text" id="monthly_salary_modal" pattern="\d*" maxlength="10" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" value="{{obj1.monthly_salary}}" name="monthly_salary" 
+
+               <input type = "hidden" id = "book_id">
+              </div>
+            </div>
+
+            <center>
+             <a class="btn btn-outline-primary" onclick = "update_salaries()" >Update</a>
+            </center>
+  
+        </div>
+      </div>
+    </div>
+  </div>
+    
+
+
+
+
+  <div class="modal fade" id="deletemodal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="formModal">Delete Data</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <center>
+          <h6>
+            <b>
+             <p>  Are you sure to Delete? </p>
+            </b>
+          <h6> 
+        </center>
+         
+        <input type = "hidden" id = "delete_id_emp">
+     <br><br>
+    
+        <center>
+         <button type="button" onclick = "delete_modal()" class="btn btn-danger pull-center">Delete</button>  
+      
+       <button type="button" class="btn btn-warning pull-center" data-dismiss= "modal">Cancel</button>
+      </center>
+   
+
+  </form>
+</div>
+ </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <div class="modal fade" id="deleteconfirm" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="formModal">Delete Data</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+ <div>
+            <center>
+     <h6>
+       Data Deleted Successfully
+     </h6>
+        
+        <button type="button" onClick="window.location.reload();"  class="btn btn-info pull-center" data-dismiss= "modal">OK</button><br><br><br>
+      </center>
+    </div>
+    
+  </form>
+</div>
+ </div>
+      </div>
+    </div>
+  </div>
+
+   
+    </body>
+    </html>
+    <script>  
+  
+    $('#employee_report').attr("class","active")
+    $("#reports").attr("class","active")
+    $(document).ready( function () {
+        
+        $('#employee_table').DataTable({
+    
+            
+            });
+    });
+  
+
+
+      
+   function change_salary(){
+
+  
+    var divide_salary= $('#yearly_package_modal').val();
+    var employee_salary= (divide_salary)/12
+    console.log(employee_salary)
+    $("#monthly_salary_modal").val(employee_salary)
+  
+  }
+
+
+
+
+
+    function edit_modal_salaries(name, destination, designation, yearly_package, monthly_salary, id){
+      console.log(name)
+      console.log(destination)
+      console.log(designation)
+      console.log(yearly_package)
+      console.log(monthly_salary)
+      console.log(id)
+
+      $('#editmodal').modal('show'); 
+
+      $("#name_modal").val(name);
+      $("#destination_modal").val(destination);
+      $('#designation_modal').val(designation);
+      $('#yearly_package_modal').val(yearly_package);
+      $('#monthly_salary_modal').val(monthly_salary);
+      $('#book_id').val(id);
+      
+   
+    }
+
+
+     function update_salaries(){
+
+       
+        var book_id = $("#book_id").val() 
+        var name_modal = $("#name_modal").val() 
+        var destination_modal = $("#destination_modal").val() 
+        var designation_modal = $("#designation_modal").val() 
+        var yearly_package_modal = $("#yearly_package_modal").val() 
+        var monthly_salary_modal= $("#monthly_salary_modal").val() 
+        
+        console.log(name_modal)
+        console.log(destination_modal)
+        console.log(designation_modal)
+        console.log(yearly_package_modal)
+        console.log(monthly_salary_modal)
+       
+        
+    
+            $.ajax({
+              method : "POST",
+              url : "/update_salaries/",
+              data : {
+                'id':book_id,
+                'name_modal':name_modal,
+                'destination_modal':destination_modal,
+                'designation_modal':designation_modal,
+                'yearly_package_modal':yearly_package_modal,
+                'monthly_salary_modal':monthly_salary_modal,
+                },
+    
+    
+              success : function(response){
+                if (response == "success"){
+                  swal("Value Updated", {
+                  icon: "success",
+                  button: "Ok",
+                  closeOnClickOutside: false,
+                  }).then(function() {
+                    location.reload();
+                  });
+                }
+              }
+            });
+      }
+      
+
+  
+  function delete_modal_salaries(id){
+        console.log(id)
+
+        $('#deletemodal').modal('show'); 
+        $('#delete_id_emp').val(id);
+   }
+    
+
+function delete_modal(){
+
+  var delete_id = $("#delete_id_emp").val() 
+    console.log(delete_id)
+ 
+      $.ajax({
+        method : "POST",
+        url : "/Delete_employee_salary/",
+        data : {
+          'delete_id':delete_id
+          },
+        success : function(response){
+          if (response == "success"){
+           
+              $('#deletemodal').modal('hide'); 
+              $('#deleteconfirm').modal('show'); 
+    
+            }
+          }
+        });
+   }
+   
+
+
+
+
+
+ 
+   
+
+
+    </script>
+    
+    {% include "footer.html" %}

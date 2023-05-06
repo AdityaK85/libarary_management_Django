@@ -1,0 +1,93 @@
+			<div class="table-responsive">
+                      <table class="table table-striped" id  = "book_table" >
+                        <thead>
+                         <tr>
+                                 <th class="text-center"> Sr No. </th>
+                 
+                                <th> Book Name</th>
+                                <th>Student Name</th>
+                                <th>Stu Class</th>
+                                <th>Issue Date</th>
+                                <th>Till Date</th>
+                                <th>Request Status</th>
+                                <th>Action</th>
+           
+                       
+                                  </tr>
+                        </thead>
+                        <tbody>
+
+                           {% for i in obj1 %}
+						   
+						   <tr>
+							
+							   <th scope="row">{{i.id}}</th>
+                                    <td>{{i.book_name}}</td>
+                                    <td>{{i.stu_name}}</td>
+                                    <td>{{i.stu_class}}</td>
+                                    <td>{{i.issue_date}}</td>
+                                    <td>{{i.till_date}}</td>
+                                 
+								  <td>
+									<a class="btn btn-outline-primary" href = "/edit_book/{{i.id}}"><i class=" fas fa fa-pencil" aria-hidden="true" ></i></a>
+												   <a class="btn btn-outline-dark" onclick = "delete_book('{{i.id}}')" ><i class=" fas fa-trash" ></i></a>
+												</td>
+                 
+                          </tr>
+						  
+						  {% endfor %}
+						  
+                        </tbody>
+                      </table>
+                    </div>
+					
+<script>
+
+  $(document).ready( function () {
+      
+    $('#book_table').DataTable({
+
+        dom: 'lBfrtip',
+        buttons: [{
+        extend: 'excelHtml5',
+        text : 'Export to Excel',
+        title: 'example',
+        }
+        ]
+        });
+});	
+function delete_book(id){
+    console.log(id)
+    swal({
+      title: "Are you sure?",
+      text: "",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          method : "POST",
+          url : "/Delete_book/",
+          data : {
+            'id':id
+            },
+          success : function(response){
+            if (response == "success"){
+              swal("Book has been Deleted!", {
+              icon: "success",
+              button: "Ok",
+              closeOnClickOutside: false,
+              }).then(function() {
+                location.reload();
+              });
+            }
+          }
+        });
+      }
+    });
+  }
+  
+
+</script>					

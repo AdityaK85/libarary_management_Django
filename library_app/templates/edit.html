@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+{% include "header.html" %} 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  
+  
+</head>  
+
+
+<body style="background-color: #fdfcfc03;">
+ <div class="main-content">
+        <section class="section">
+         
+          <div class="section-body">
+            <div class="row">
+              <div class="col-lg-2" > 
+              </div>
+				<div class="col-lg-7">
+					<div class="card">
+						<div class="card-body">
+							 <ul class="breadcrumb breadcrumb-style "style="background: #f3f3f3;">
+								<li class="breadcrumb-item">
+								  <h5 class="page-title m-b-0">Update Employee Details</h5>
+								</li>
+								<li class="breadcrumb-item">
+								  <a href="/dashboard/">
+									<i class="fas fa-home"></i></a>
+								</li>
+								</ul> 
+
+                             <form action="" method="get" id='new_user_form' style="margin: 25 px auto"  ; >
+                                
+            
+                               
+
+								<label for="name">Employee_Name</label>
+								<input type="text" id="name" class="form-control" value="{{obj.name}} " name="name" tabindex="1"  required autofocus  placeholder="employee_name" > <br>
+								
+								<label for="email">Email</label>
+								<input type="email" id="email" class="form-control" value="{{obj.email}} " name="email" tabindex="1" placeholder="Email"><br>
+
+
+								<label for="designation">Designation:</label>
+								<input type="text" id="designation" class="form-control" value="{{obj.designation}} " name="designation" tabindex="1"  required autofocus  placeholder="designation" > <br>
+
+								<label for="doj">DOJ:</label>
+								<input type="date" id="doj" class="form-control" value="{{obj.doj | date:'Y-m-d'}}" name="doj" tabindex="1"  required autofocus  placeholder="YYYY-MM-DD format"> <br>
+								
+                                <input type = "hidden" id = "user_id" value = "{{user_id}}">
+
+                                <center>
+                                  <button type="button" type="submit" class="btn btn-success" value="save" onclick="add_data()" >Save </button>
+                                </center>
+                               
+						
+                              </br>
+                          <!-- <div> -->
+                            <!-- <a href="#" class="txt1"> -->
+                              <!-- Add details -->
+                            <!-- </a> -->
+                              <!-- </div> -->
+                          
+                           </div>
+                       </div>
+                   </div>
+                    
+                </div>
+                
+          
+                  </div>
+            </div>		
+          </body>			 
+          <script>
+          
+          
+          $(document).ready(function(){
+
+             $('#save_button').trigger('click');
+           });
+        
+         
+          
+          
+          function add_data(){
+          var name=$('#name').val()
+          var email=$('#email').val()
+          var designation=$('#designation').val()
+          var doj=$('#doj').val()
+          var user_id =$('#user_id').val()
+          
+          console.log(name)
+          console.log(email)
+          console.log(designation)
+          console.log(doj)
+          console.log(user_id)
+          
+        
+        $.ajax({
+            method : "POST",
+            url : "/student",
+            data : {
+              'name':name,
+              'email':email,
+              'designation':designation,
+              'doj':doj,
+              'user_id':user_id,
+                csrfmiddlewaretoken:$('input[name= csrfmiddlewaretoken]').val()
+            
+            },
+            success : function(response){
+               
+                if (response == "success"){
+            
+                    alert("Data Updated Successfully")
+ 
+                    location.href = '/employee_view/'
+ 
+                }
+                
+                else{
+                
+                    alert("User already exixts")
+                
+                }
+ 
+            
+            }
+ 
+    });
+ }
+ </script>
+{% include "footer.html" %}
+</html>

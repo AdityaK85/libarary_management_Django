@@ -1,0 +1,289 @@
+
+ <style>
+  .btn-group-vertical>.btn, .btn-group>.btn {
+      position: relative;
+      -ms-flex: 1 1 auto;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+      width: 140px;
+      margin-bottom: -25px;
+  }
+  
+  
+  
+    </style>
+  
+  {% include "header.html" %} 
+        <!-- Main Content -->
+        <div class="main-content">
+          <section class="section">
+           
+            <div class="section-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <ul class="breadcrumb breadcrumb-style" style="margin-bottom: 0px;;">
+                            <li class="breadcrumb-item">
+                              <h4 class="page-title m-b-0">Books Borrow</h4>
+                            </li>
+                            <li class="breadcrumb-item">
+                              
+                              
+                              <a href="/dashboard/">
+                              <button type="button" class="btn btn-primary btn-sm">Back</button></a>
+                            
+                            
+                            
+                            </li>
+                          </ul>
+                        </div>
+
+
+                        
+                        <!-- <div class="col-md-6 pull-right" style="margin-top: 7px;"> -->
+                          <!-- <a href="/add_rent/" class="btn btn-icon btn-primary pull-right" > Add Book Rent</a> -->
+                            <!-- </div> -->
+                            <!-- </div> -->
+                           
+                        <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                          <!-- <a href="/add_task/" class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a> -->
+                        </div>
+                        </div>
+                        <hr>
+  
+                   
+                    
+                     
+
+                          <div id="table_div"> 
+                        <div class="table-responsive">
+
+                        
+					
+                            <table class="table table-hover" id  = "view_table" >
+                              <thead>
+                                <tr>
+                                      <th> Id </th>
+                                      <th> Books Borrow</th>
+                                      <th>Student Name</th>
+                                      <th>Issue Date</th>
+                                      <th>Till Date</th>
+                                      <th>Action</th>
+                                      <th>Payment Status</th>
+                                      <th>Charges</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                             
+                                 {% for i in obj %}
+                                
+                     <tr>
+                                  <th scope="row">{{i.id}}</th>
+                                  <td> 
+                                    {% if i.request == "Accept" %}
+                                     {{i.book_name}} 
+                                    <td>{{i.stu_name}}</td>
+                                    <td>{{i.issue_date}}</td>
+                                   <td>{{i.till_date}}</td>
+                                  
+                                      {% else %}
+                                    0
+                                       {% endif %}
+                                  </td>
+                                 
+                                 
+                     
+			                      <td>
+			
+					           
+                                {%if i.return_status == False %}
+                                <a class="btn btn-outline-primary" onclick = "change_return_status('{{i.id}}', 'True')" >Return</a>
+                                {%else%}
+                                <h6> Return </h6>
+                                {%endif%} 
+                      
+                     
+                                  </td>
+                                  <td>
+                                    {%if i.payment_status == False %}
+                                    <a class="btn btn-outline-primary" onclick = "open_modal('{{i.add}}','{{i.id}}')"> Payment</a>
+                                    {%else%}
+                                    completed
+                                    {%endif%} 
+                                  </td>
+
+                                  <td> {{i.charges}} </td>
+                                </tr>
+                    
+                                      {% endfor %}
+                    
+                              </tbody>
+                            </table>
+                 
+                          
+                          
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </section>
+          </div>
+       
+        </div>
+      </div>
+                   
+                         </div>
+                  
+                      
+                  
+  
+                   </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+          </section>
+        </div>
+     
+      </div>
+    </div>
+  <!----------------------------------------------------------------------------------------------------->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Add Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              
+	
+			  
+			  <div class="modal-body">
+           
+                  <div class="form-group">
+                    <label>Payable Charges<span style = "color:red">*</span>:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="" id = "charges"  disabled = True>
+
+                      <input type = "hidden" id = "book_id">
+                    </div>
+                  </div>
+				           <a class="btn btn-outline-primary" onclick = "payment_status()" >Save</a>
+                                
+                      
+                     
+                              
+             
+              </div>
+            </div>
+          </div>
+        </div>
+  
+  
+  
+    
+  </body>
+  </html>
+  <script>
+  
+  <!-- $('#book_report').attr("class","active") -->
+  <!-- $("#reports").attr("class","active") -->
+  $(document).ready( function () {
+  
+      $('#view_table').DataTable({
+  
+          });
+  });
+  
+  
+   function change_return_status(id,status1){
+
+      console.log(id)
+      console.log(status1)
+      swal({
+        title: "Are you sure?",
+        text: "To Change Request Status",
+        icon: "info",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.ajax({
+            method : "POST",
+            url : "/change_return_status/",
+            data : {
+              'id':id,
+              'status1':status1,
+              },
+            success : function(response){
+              if (response == "success"){
+                swal("Return Status Changed", {
+                icon: "success",
+                button: "Ok",
+                closeOnClickOutside: false,
+                }).then(function() {
+                  location.reload();
+                });
+              }
+            }
+          });
+        }
+      });
+    }
+    
+    function open_modal(add, id){
+      console.log(add)
+      $('#exampleModal').modal('show'); 
+      $('#charges').val(add);
+      $('#book_id').val(id);
+   
+    }
+    
+   
+
+
+    function payment_status(){
+      var book_id = $("#book_id").val() 
+      var charges = $("#charges").val() 
+
+      console.log(book_id)
+      console.log(charges)
+
+          $.ajax({
+            method : "POST",
+            url : "/payment_status_completed/",
+            data : {
+              'id':book_id,
+              'charges':charges,
+              },
+            success : function(response){
+              if (response == "success"){
+                swal("Return Status Changed", {
+                icon: "success",
+                button: "Ok",
+                closeOnClickOutside: false,
+                }).then(function() {
+                  location.reload();
+                });
+              }
+            }
+          })
+    }
+  
+  </script>
+  
+  {% include "footer.html" %}

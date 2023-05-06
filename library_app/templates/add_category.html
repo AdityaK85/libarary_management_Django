@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+{% include "header.html" %} 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  
+  
+</head>  
+
+
+<body style="background-color: #fdfcfc03;">
+ <div class="main-content">
+        <section class="section">
+         
+          <div class="section-body">
+            <div class="row">
+              <div class="col-lg-2" > 
+              </div>
+				<div class="col-lg-7">
+					<div class="card">
+						<div class="card-body">
+							 <ul class="breadcrumb breadcrumb-style "style="background: #f3f3f3;">
+								<li class="breadcrumb-item">
+								  <h5 class="page-title m-b-0">Add New Category</h5>
+								</li>
+								<li class="breadcrumb-item">
+								  <a href="/dashboard/">
+									<i class="fas fa-home"></i></a>
+								</li>
+								</ul> 
+
+                             <form action="" method="get" id='new_user_form' style="margin: 25 px auto"  ; >
+                                
+            
+                               
+
+								<label for="category">Category</label>
+								<input type="text" id="category" class="form-control" name="category" tabindex="1"  required autofocus  placeholder="category" > <br>
+								                       
+                <center>
+                  <button type="button" type="submit" class="btn btn-success" value="save" onclick="add_category()" >Save </button>
+                </center>
+                                                
+						         
+						
+                      </br>
+                  <!-- <div> -->
+                    <!-- <a href="#" class="txt1"> -->
+                      <!-- Add details -->
+                    <!-- </a> -->
+                      <!-- </div> -->
+                  
+                   </div>
+               </div>
+           </div>
+            
+        </div>
+        
+  
+          </div>
+    </div>		
+  </body>			 
+  <script>
+  
+  
+  $(document).ready(function(){
+  $(document).bind('keypress', function(e) {
+  if(e.keyCode==13){
+     $('#save_button').trigger('click');
+   }
+  });
+  })
+  
+  
+  function add_category(){
+  
+  var category=$('#category').val()
+
+  if(category == ""){
+  
+    swal("Please Enter category.", {
+        icon: "info",
+        button: "Ok",
+        closeOnClickOutside: false,     
+        }).then(function() {
+          
+      });
+    
+    }
+ 
+  else{
+
+  console.log(category)
+
+        $.ajax({
+            method : "POST",
+            url : "/new_category/",
+            data : {
+              
+              'category':category,
+          
+            },
+            success : function(response){
+               
+                if (response == "success"){
+            
+                    alert("Data store")
+ 
+                    location.href = '/book_category/'
+ 
+                }
+                
+                else{
+                
+                    swal("Category already exixts")
+                
+                }
+ 
+            
+            }
+ 
+    });
+ }
+}
+ </script>
+{% include "footer.html" %}
+</html>

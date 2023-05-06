@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+{% include "header.html" %} 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  
+  <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+</head>  
+
+
+<body style="background-color: #fdfcfc03;" >
+
+
+ <div class="main-content">
+        <section class="section">
+       
+          <div class="section-body" >
+            <div class="row" >
+              <div class="col-lg-2" > 
+              </div>
+				<div class="col-lg-7">
+					<div class="card" >
+						<div class="card-body">
+							 <ul class="breadcrumb breadcrumb-style "style="background: #f3f3f3;">
+								<li class="breadcrumb-item">
+								  <h5 class="page-title m-b-0">Update Book</h5>
+								</li>
+								<li class="breadcrumb-item">
+								  <a href="/dashboard/">
+									<i class="fas fa-home"></i></a>
+								</li>
+								</ul> 
+                                <form action="" method="get" id='new_user_form' style="margin: 25 px auto"  ; >
+                                
+            
+                               
+
+                                    <label for="book_name">Book Name</label>
+                                    <input type="text" id="book_name" class="form-control" value="{{obj.book_name}}" name="book_name" tabindex="1"  required autofocus  placeholder="book_name" > <br>
+                                    
+                                    <label for="author">Author</label>
+                                    <input type="text" id="author" class="form-control" value="{{obj.author}}" name="author" tabindex="1" placeholder="author"><br>
+    
+    
+                                    <label for="dop">DOP:</label>
+                                    <input type="date" id="dop" class="form-control" value="{{obj.dop | date:'Y-m-d'}}" name="dop" tabindex="1"  required autofocus  placeholder="dop" > <br>
+    
+                              <div class="form-group">
+                                    <label>Category</label>
+                                                                                      
+                                    <select id="category" class="form-control" >
+                                    <option value = "" selected hidden >Category</option>
+                                                                                            
+                                    {% for i in obj1 %}
+                                        <option value = "{{i.category}}" >{{i.category}}</option>
+                                    {% endfor %}
+                                    </select>
+                                                                                        
+                                    </div>
+								
+                                    
+                                   <div class="form-group">
+                                    <label for="condition">Condition</label>
+                                     <select  type="text" id="condition"  class="form-control" name="condition" placeholder="condition" >
+                                  
+                                        <option value="old">Old</option>
+                                        <option value="new">New</option>
+                                        <option value="average">Average</option>
+                                        
+                                      </select>
+									  </div>
+									
+    
+                                    <label for="price">Price:</label>
+                                    <input type="number" id="price" class="form-control" value="{{obj.price}}" name="price" tabindex="1"  required autofocus  placeholder="price"> <br>
+                                    
+                                    <input type = "hidden" id = "user_id" value = "{{user_id}}">
+
+                              <center>
+                                <button type="button" type="submit" class="btn btn-success" value="save" onclick="book_edit()" >Save </button>
+                              </center>       
+						         
+						
+                      </br>
+                  <!-- <div> -->
+                    <!-- <a href="#" class="txt1"> -->
+                      <!-- Add details -->
+                    <!-- </a> -->
+                      <!-- </div> -->
+                  
+                   </div>
+               </div>
+           </div>
+            
+        </div>
+        
+  
+          </div>
+    </div>		
+  </body>			 
+  <script>
+  
+           
+  
+  
+            $(document).ready(function(){
+              $("#category").val("{{obj.category}}");
+              $("#condition").val("{{obj.condition}}");
+                 $('#save_button').trigger('click');
+                
+               
+              
+              })
+              
+              
+              function book_edit(){
+              var book_name=$('#book_name').val()
+              var author=$('#author').val()
+              var dop=$('#dop').val()
+              var category=$('#category').val()
+              var condition=$('#condition').val()
+              var price=$('#price').val()
+              var user_id =$('#user_id').val()
+              
+              console.log(book_name)
+              console.log(author)
+              console.log(dop)
+              console.log(category)
+              console.log(condition)
+              console.log(price)
+              console.log(user_id)
+  
+ 
+        
+        $.ajax({
+            method : "POST",
+            url : "/editbook",
+            data : {
+              'book_name':book_name,
+              'author':author,
+              'dop':dop,
+              'category':category,
+              'condition':condition,
+              'price':price,
+              'user_id': user_id,
+
+
+                csrfmiddlewaretoken:$('input[name= csrfmiddlewaretoken]').val()
+            
+            },
+            success : function(response){
+               
+                if (response == "success"){
+            
+                    alert("Data Updated Successfully")
+ 
+                    location.href = '/book_master/'
+ 
+                }
+                
+                else{
+                
+                    alert("User already exixts")
+                
+                }
+ 
+            
+            }
+ 
+    });
+ }
+ </script>
+{% include "footer.html" %}
+</html>

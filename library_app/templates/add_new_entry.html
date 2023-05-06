@@ -1,0 +1,295 @@
+<!DOCTYPE html> {% include "header.html" %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+            .select2-selection__choice {
+            padding: 5px 5px !important;
+            height: 28px !important;
+            line-height: 1.4;
+    </style>
+
+</head>
+
+
+<body style="background: " #fdfcfc03; ">
+    <div class="main-content ">
+        <section class="section ">
+
+            <div class="section-body ">
+                <div class="row ">
+                    <div class="col-lg-2 ">
+                    </div>
+                    <div class="col-lg-7 ">
+                        <div class="card ">
+                            <div class="card-body ">
+                                <ul class="breadcrumb breadcrumb-style " style="background: #f3f3f3; ">
+                                    <li class="breadcrumb-item ">
+                                        <h5 class="page-title m-b-0 ">Add New Entry</h5>
+                                    </li>
+                                    <li class="breadcrumb-item ">
+                                        <a href="/dashboard/ ">
+                                            <i class="fas fa-home "></i></a>
+                                    </li>
+                                </ul>
+
+                                <form action=" " method="get " id='new_user_form' style="margin: 25 px auto " ;>
+
+
+
+                                    <label for="visitor_name ">Visitor Name</label>
+                                    <input type="text " id="visitor_name " class="form-control " name="visitor_name " tabindex="1 " required autofocus placeholder="visitor name "> <br>
+
+
+
+                                    <div class="container ">
+                                        <h6>Visitors Plan</h6>
+
+                                        <form>
+                                            <label class="radio-inline ">
+                                        <input type="radio " name="visitor_plan " value="Daily " checked>Daily
+                                      </label>
+                                            <label class="radio-inline ">
+                                        <input type="radio " name="visitor_plan " value="monthly ">Monthly
+                                      </label>
+                                            <label class="radio-inline ">
+                                        <input type="radio " name="visitor_plan " value="Yearly ">Yearly
+                                      </label>
+                                        </form>
+                                    </div>
+                                    <br>
+                                    <label for="email ">Email</label>
+                                    <input type="email " id="email " class="form-control " name="email " tabindex="1 " placeholder="email "><br>
+
+
+                                    <label for="contact_No ">Contact No</label>
+                                    <input type="number " id="contact_No " class="form-control " name="contact_no " tabindex="1 " required autofocus placeholder="contact_no " pattern="[0-9]{3}-[0-9]{2}-[0-9]{3} "> <br>
+
+                                    <div class="container ">
+                                        <h6>Gender</h6>
+
+                                        <form>
+                                            <label class="radio-inline ">
+                                        <input type="radio "  name="gender " value= "male " checked>Male
+                                      </label>
+                                            <label class="radio-inline ">
+                                        <input type="radio " name="gender "value= "female ">Female
+                                      </label>
+                                            <label class="radio-inline ">
+                                        <input type="radio "  name="gender " value= "other ">Other
+                                      </label>
+                                        </form>
+                                    </div>
+                                    <br>
+
+
+
+                                    <div class="form-group ">
+
+                                        <label>Book Name</label>
+                                        <span class="validation " style="display:initial; "></span>
+                                        <select id="book_name " class="form-control " style="color: #151414; " multiple="multiple ">
+                                   
+                                                                                            
+                                    {% for i in obj %}
+                                        <option value = "{{i.book_name}} " >{{i.book_name}}</option>
+                                    {% endfor %}
+                                    </select>
+
+                                    </div>
+
+                                    <label for="entry ">Entry Time</label>
+
+                                    <input type="time " id="visit_time " name="trip-start ">
+
+                                    <label for="exit ">Exit Time:</label>
+                                    <input type="time " id="end_time " name="trip-end ">
+                                    <br> <br><br>
+
+                                    <center>
+                                        <button type="button " type="submit " class="btn btn-success " value="save " onclick="add_entry() ">Save </button>
+                                    </center>
+
+
+
+
+
+                                    </br>
+                                    <!-- <div> -->
+                                    <!-- <a href="# " class="txt1 "> -->
+                                    <!-- Add details -->
+                                    <!-- </a> -->
+                                    <!-- </div> -->
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+    </div>
+</body>
+<script>
+    $(document).ready(function() {
+
+        $(document).bind('keypress', function(e) {
+            if (e.keyCode == 13) {
+                $('#save_button').trigger('click');
+            }
+        });
+    })
+
+    $("#book_name ").select2({
+        tags: true,
+        placeholder: " Please Select Book Name ",
+    });
+
+
+    function add_entry() {
+
+        var visitor_name = $('#visitor_name').val()
+
+        var visitor_plan = $("input[name='visitor_plan' ]:checked ").val();
+        if (visitor_plan) {
+            alert("Your are a - " + visitor_plan);
+        }
+
+        var email = $('#email').val()
+        var contact_No = $('#contact_No').val()
+
+        var gender = $("input[name='gender' ]:checked ").val();
+        if (gender) {
+            alert("Your are a - " + gender);
+        }
+
+        var book_id_list = []
+        for (var option of document.getElementById('book_name').options) {
+            if (option.selected) {
+                book_id_list.push(option.value);
+            }
+        }
+
+        var visit_time = $('#visit_time').val()
+        var end_time = $('#end_time').val()
+
+
+        if (visitor_name == " ") {
+
+            swal("Please Enter Visitor Name ", {
+                icon: "info ",
+                button: "Ok ",
+                closeOnClickOutside: false,
+            }).then(function() {
+
+            });
+
+        } else if (email == " ") {
+
+            swal("Please Enter Email. ", {
+                icon: "info ",
+                button: "Ok ",
+                closeOnClickOutside: false,
+            }).then(function() {
+
+            });
+
+        } else if (book_name == " ") {
+
+            swal("Please Enter Book Name. ", {
+                icon: "info ",
+                button: "Ok ",
+                closeOnClickOutside: false,
+            }).then(function() {
+
+            });
+
+        } else if (visit_time == " ") {
+
+            swal("Please Enter Visit Time. ", {
+                icon: "info ",
+                button: "Ok ",
+                closeOnClickOutside: false,
+            }).then(function() {
+
+            });
+
+        } else if (end_time == " ") {
+
+            swal("Please Enter Exit time. ", {
+                icon: "info ",
+                button: "Ok ",
+                closeOnClickOutside: false,
+            }).then(function() {
+
+            });
+
+        } else if (contact_No == " ") {
+
+            swal("Please Enter Contact Number. ", {
+                icon: "info ",
+                button: "Ok ",
+                closeOnClickOutside: false,
+            }).then(function() {
+
+            });
+
+        } else {
+
+
+            console.log(visitor_name)
+            console.log(visitor_plan)
+            console.log(email)
+            console.log(contact_No)
+            console.log(gender)
+            console.log(book_id_list)
+            console.log(visit_time)
+            console.log(end_time)
+
+
+
+
+
+
+            $.ajax({
+                method: "POST ",
+                url: "/new_entry/ ",
+                data: {
+                    'visitor_name': visitor_name,
+                    'visitor_plan': visitor_plan,
+                    'email': email,
+                    'contact_No': contact_No,
+                    'gender': gender,
+                    'book_id_list': JSON.stringify(book_id_list),
+                    'visit_time': visit_time,
+                    'end_time': end_time,
+
+                },
+                success: function(response) {
+
+                    if (response == "success ") {
+
+                        alert("Data store ")
+
+                        location.href = '/daily_visitors/'
+
+                    } else {
+
+                        alert("User already exixts ")
+
+                    }
+
+
+                }
+
+            });
+        }
+    }
+</script>
+{% include "footer.html " %}
+
+</html>

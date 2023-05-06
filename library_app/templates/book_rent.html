@@ -1,0 +1,275 @@
+
+ <style>
+  .btn-group-vertical>.btn, .btn-group>.btn {
+      position: relative;
+      -ms-flex: 1 1 auto;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+      width: 140px;
+      margin-bottom: -25px;
+  }
+  
+  
+  
+    </style>
+  
+  {% include "header.html" %} 
+        <!-- Main Content -->
+        <div class="main-content">
+          <section class="section">
+           
+            <div class="section-body">
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <ul class="breadcrumb breadcrumb-style" style="margin-bottom: 0px;;">
+                            <li class="breadcrumb-item">
+                              <h4 class="page-title m-b-0">Book Rent</h4>
+                            </li>
+                            <li class="breadcrumb-item">
+                              
+                              
+                              <a href="/dashboard/">
+                              <button type="button" class="btn btn-primary btn-sm">Back</button></a>
+                            
+                            
+                            
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                          <a href="/add_rent/" class="btn btn-icon btn-primary pull-right" > Add Book Rent</a>
+                            </div>
+                            </div>
+                           
+                        <div class="col-md-6 pull-right" style="margin-top: 7px;">
+                          <!-- <a href="/add_task/" class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a> -->
+                        </div>
+                        </div>
+                        <hr>
+  
+                   
+                    
+                     
+
+                          <div id="table_div"> 
+                        <div class="table-responsive">
+
+                        
+					
+                            <table class="table table-hover" id  = "view_table" >
+                              <thead>
+                                <tr>
+                                  <th> Id </th>
+               
+                              <th> Book Category</th>
+                              <th>Charge</th>
+                              <th>Hourly Price</th>
+                              <th>Action</th>
+         
+                     
+                                </tr>
+                              </thead>
+                              <tbody>
+                             
+                                 {% for i in obj %}
+                     
+                     <tr>
+                                  <th scope="row">{{i.id}}</th>
+                                  <td>{{i.hk_rent.category}}</td>
+								<td>  
+								                  {% if i.rent == none %}
+                                       0
+                                     {% else %}
+                                    {{i.rent}}
+							                      {% endif %}
+                                
+                                </td>
+                                <td> {{i.hourly_price}} </td>
+                    <td>
+
+                               
+                               <a class="btn btn-outline-primary" onclick = "open_modal_rent('{{i.hk_rent.category}}','{{i.rent}}', '{{i.hourly_price}}','{{i.id}}')"> <i class=" fas fa fa-pencil" aria-hidden="true" ></i></a>
+                                     <!-- <a class="btn btn-outline-dark" onclick = "delete_category('{{i.id}}')" ><i class=" fas fa-trash" ></i></a> -->
+                                  </td>
+                                </tr>
+                    
+                                 {% endfor %}
+                    
+                              </tbody>
+                            </table>
+                 
+                          
+                          
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </section>
+          </div>
+       
+        </div>
+      </div>
+                   
+                         </div>
+                  
+                      
+                  
+  
+                   </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+          </section>
+        </div>
+     
+      </div>
+    </div>
+   <!----------------------------------------------------------------------------------------------------->
+
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="formModal">Add Payment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              
+	
+			  
+			  <div class="modal-body">
+           
+                  <div class="form-group">
+                    <label>Book Category<span style = "color:red">*</span>:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="" id = "category" disabled=True>
+
+                      <input type = "hidden" id = "book_id">
+                    </div>
+                  </div>
+
+                   <div class="form-group">
+                    <label> Rent <span style = "color:red">*</span>:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="text" class="form-control" placeholder="" id = "rent" >
+
+                      <input type = "hidden" id = "book_id">
+                    </div>
+                  </div>
+
+                   <div class="form-group">
+                    <label> Hourly Price <span style = "color:red">*</span>:</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <div class="input-group-text">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      </div>
+                      <input type="number" class="form-control" placeholder="" id = "hourly_price" >
+
+                      <input type = "hidden" id = "book_id">
+                    </div>
+                  </div>
+
+                  <center>
+                   <a class="btn btn-outline-primary" onclick = "edit_modal()" >Save</a>
+                  </center>
+				          
+                                
+                      
+                     
+                              
+             
+              </div>
+            </div>
+          </div>
+        </div>
+    
+  
+  
+    
+  </body>
+  </html>
+  <script>
+  
+  <!-- $('#book_report').attr("class","active") -->
+  <!-- $("#reports").attr("class","active") -->
+  $(document).ready( function () {
+      
+      $('#view_table').DataTable({
+  
+          });
+  });
+  
+  function open_modal_rent(category, rent, hourly_price, id){
+    console.log(category)
+    $('#exampleModal').modal('show'); 
+    $('#category').val(category);
+    $('#rent').val(rent);
+    $('#hourly_price').val(hourly_price);
+    $('#book_id').val(id);
+ 
+  }
+  
+  function edit_modal(){
+    var book_id = $("#book_id").val() 
+    var category = $("#category").val() 
+    var rent = $("#rent").val() 
+    var hourly_price = $("#hourly_price").val() 
+
+    console.log(book_id)
+    
+
+        $.ajax({
+          method : "POST",
+          url : "/edit_modal/",
+          data : {
+            'id':book_id,
+            'category':category,
+            'rent':rent,
+            'hourly_price':hourly_price,
+            },
+
+
+          success : function(response){
+            if (response == "success"){
+              swal("Return Status Changed", {
+              icon: "success",
+              button: "Ok",
+              closeOnClickOutside: false,
+              }).then(function() {
+                location.reload();
+              });
+            }
+          }
+        })
+  }
+  
+  
+ 
+  
+  
+  </script>
+  
+  {% include "footer.html" %}

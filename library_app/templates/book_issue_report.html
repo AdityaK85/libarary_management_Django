@@ -1,0 +1,302 @@
+{% load static %}
+<style>
+  .btn-group-vertical>.btn, .btn-group>.btn {
+      position: relative;
+      -ms-flex: 1 1 auto;
+      -webkit-box-flex: 1;
+      flex: 1 1 auto;
+      width: 140px;
+      margin-bottom: -25px;
+  }
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.6/dist/sweetalert2.all.min.js"></script>
+</style>
+
+{% include "header.html" %}
+<!-- Main Content -->
+<div class="main-content">
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-lg-12 container-fluid">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <ul
+                    class="breadcrumb breadcrumb-style"
+                    style="margin-bottom: 0px"
+                  >
+                    <li class="breadcrumb-item">
+                      <h4 class="page-title m-b-0">Book Issue Report</h4>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="/dashboard/">
+                        <button type="button" class="btn btn-primary btn-sm">
+                          Back
+                        </button></a
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="col-md-6 pull-right" style="margin-top: 7px">
+                  <a
+                    href="/request_book/"
+                    class="btn btn-icon btn-primary pull-right"
+                  >
+                    New Request</a
+                  >
+                </div>
+
+                <div class="col-md-6 pull-right" style="margin-top: 7px">
+                  <!-- <a href="/add_task/" class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a> -->
+                </div>
+              </div>
+              <hr />
+
+              <div class="row">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label
+                          >Start Date <span style="color: red">*</span>:</label
+                        >
+                        <div class="input-group">
+                          <input
+                            type="date"
+                            class="form-control"
+                            value="{{start_day|date:'Y-m-d'}}"
+                            id="start_date"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label
+                          >End Date <span style="color: red">*</span>:</label
+                        >
+                        <div class="input-group">
+                          <input
+                            type="date"
+                            class="form-control"
+                            value="{{end_date|date:'Y-m-d'}}"
+                            id="end_date"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1">
+                      <div class="form-group">
+                        <div class="buttons">
+                          <a
+                            class="btn btn-primary btn-sm"
+                            style="margin-top: 45%"
+                            onclick="search_request()"
+                            >Search</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 pull-right" style="margin-top: 7px">
+                <!-- <a href="/add_task/" class="btn btn-icon btn-primary pull-right" ><i class="fas fa-plus"></i></a> -->
+              </div>
+            </div>
+            <hr />
+
+            <div id="table_div">
+              <div class="table-responsive">
+                <table class="table table-hover" id="view_table">
+                  <thead>
+                    <tr>
+                      <th>Sr No.</th>
+
+                      <th>Book Name</th>
+                      <th>Student Name</th>
+                      <th>Stu Class</th>
+                      <th>Issue Date</th>
+                      <th>Till Date</th>
+                      <th>Charge</th>
+                      <th>Request Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in list %}
+
+                    <tr>
+                      <th scope="row">{{i.id}}</th>
+                      <td>{{i.book_name}}</td>
+                      <td>{{i.stu_name}}</td>
+                      <td>{{i.stu_class}}</td>
+                      <td>{{i.issue_date}}</td>
+                      <td>{{i.till_date}}</td>
+                      <td>{{i.charges}}</td>
+
+                      <td>
+                        {%if i.request == 'pending'%}
+                        <a
+                          class="btn btn-outline-primary"
+                          onclick="change_request('{{i.id}}','Accept')"
+                          >Accept</a
+                        >
+                        <a
+                          class="btn btn-outline-primary"
+                          onclick="change_request('{{i.id}}','Reject')"
+                          >Reject</a
+                        >
+                        {%elif i.request == 'Accept'%}
+                        <a
+                          class="btn btn-outline-primary"
+                          onclick="change_request('{{i.id}}','Reject')"
+                          >Reject</a
+                        >
+                        {%else%}
+                        <a
+                          class="btn btn-outline-primary"
+                          onclick="change_request('{{i.id}}','Accept')"
+                          >Accept</a
+                        >
+                        {%endif%}
+                      </td>
+
+                      <td>
+                        <a
+                          class="btn btn-outline-primary"
+                          href="/edit_request/{{i.id}}"
+                          ><i class="fas fa fa-pencil" aria-hidden="true"></i
+                        ></a>
+                        <a
+                          class="btn btn-outline-dark"
+                          onclick="delete_book1('{{i.id}}')"
+                          ><i class="fas fa-trash"></i
+                        ></a>
+                      </td>
+                    </tr>
+
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  $("#book_report").attr("class", "active");
+  $("#reports").attr("class", "active");
+  $(document).ready(function () {
+    $("#view_table").DataTable({});
+  });
+
+  function delete_book1(id) {
+    console.log(id);
+    swal({
+      title: "Are you sure?",
+      text: "",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          method: "POST",
+          url: "/Delete_book1/",
+          data: {
+            id: id,
+          },
+          success: function (response) {
+            if (response == "success") {
+              swal("Student has been Deleted!", {
+                icon: "success",
+                button: "Ok",
+                closeOnClickOutside: false,
+              }).then(function () {
+                location.reload();
+              });
+            }
+          },
+        });
+      }
+    });
+  }
+
+  function change_request(id, status) {
+    console.log(id);
+    console.log(status);
+    swal({
+      title: "Are you sure?",
+      text: "To Change Request Status",
+      icon: "info",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          method: "POST",
+          url: "/change_request_status/",
+          data: {
+            id: id,
+            status: status,
+          },
+          success: function (response) {
+            if (response == "success") {
+              swal("Book Status Changed", {
+                icon: "success",
+                button: "Ok",
+                closeOnClickOutside: false,
+              }).then(function () {
+                location.reload();
+              });
+            }
+          },
+        });
+      }
+    });
+  }
+
+  function search_request() {
+    var start_date = $("#start_date").val();
+    var end_date = $("#end_date").val();
+
+    console.log(start_date);
+    console.log(end_date);
+
+    $.ajax({
+      method: "POST",
+      url: "/search_issue_request/",
+      data: {
+        start_date: start_date,
+        end_date: end_date,
+      },
+      success: function (response) {
+        $("#loading").hide();
+        console.log(response);
+        if (response == "error") {
+          swal({
+            title: "Sorry, your search did not match any Items ",
+            icon: "warning",
+            button: "Ok",
+            closeOnClickOutside: false,
+          });
+        } else {
+          $("#table_div").html("");
+          $("#table_div").html(response);
+        }
+      },
+    });
+  }
+</script>
+
+{% include "footer.html" %}
